@@ -2,8 +2,8 @@
 $.getJSON("flp.json", function( data ) {
     console.log(data)
     
-//     google.charts.load('current', {'packages': ['timeline']});
-//     google.charts.setOnLoadCallback(drawChart);
+    google.charts.load('current', {'packages': ['timeline']});
+    google.charts.setOnLoadCallback(drawChart);
     
       function drawChart() {
     var container = document.getElementById('timeline');
