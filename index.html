@@ -19,6 +19,12 @@
             
         });
 
+        $.ajax({
+            method: "GET",
+            url: "flp.json",
+            success: function (data) {
+            console.log(data)
+            });
 
         $.ajax({
             method: "GET",
