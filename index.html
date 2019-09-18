@@ -14,10 +14,6 @@
                 ))
         }
 
-        $.ajax({
-            method: "GET",
-            url: "/send_json/",
-            success: function (data) {
 
 
                 google.charts.load('current', {'packages': ['timeline']});
@@ -25,12 +21,6 @@
                 google.charts.setOnLoadCallback(drawChart);
 
                 function drawChart() {
-
-//                     var $json_data = $.ajax({
-//                         method: "GET",
-//                         url: "/send_json/",
-//                         dataType: "json",
-//                         success: function(data) {
 
                     $.getJSON("flp.json", function( data ) {
                         
@@ -92,13 +82,8 @@
 
                             chart.draw(dataTable, options);
 
-                        }
-                    )
-
-
-                };
-            }
-        });
+                    })
+                }
 
 
     </script>
