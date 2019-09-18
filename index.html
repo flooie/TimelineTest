@@ -36,7 +36,7 @@
             url: "/harvard/",
             success: function (data) {
 
-                {#console.log(data)#}
+                console.log(data)
 
                 google.charts.load('current', {'packages': ['timeline']});
 
@@ -67,8 +67,9 @@
                                 } else {
                                     var end_date = row['end_date']
                                 }
-                                {#console.log(end_date)#}
-                                console.log(end_date - row['start_date'])
+
+                                 console.log(end_date - row['start_date'])
+                                 
                                 var x = end_date - row['start_date']
                                 if (x > 0) {
                                     {#console.log(typeof end_date)#}
@@ -81,10 +82,8 @@
                                         ]
                                     )
                                 }
-                                {#if (end_date == 2020) {#}
-                                {#    console.log(typeof end_date)#}
-                                {#}#}
-                            }
+
+                                }
 
                         dataTable.addColumn({type: 'string', id: 'President'});
                         dataTable.addColumn({type: 'string', id: 'Name' })
