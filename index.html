@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+    <html>
+
+  <head>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+
+        function make_date(data){
+            return new (Function.prototype.bind.apply(
+                   Date, [null].concat(data)
+                ))
+        }
+
+        $.ajax({
+            method: "GET",
+            url: "/harvard/",
+            success: function (data) {
+
+                {#console.log(data)#}
+
+                google.charts.load('current', {'packages': ['timeline']});
+
+                google.charts.setOnLoadCallback(drawChart);
+
+                function drawChart() {
+
+                    var $json_data = $.ajax({
+                        method: "GET",
+                        url: "/harvard-json/",
+                        dataType: "json",
+                        success: function(data) {
+
+                        var container = document.getElementById('timeline');
+                        var chart = new google.visualization.Timeline(container);
+                        var dataTable = new google.visualization.DataTable();
+
+
+                        var dx = []
+
+                            for (var i in data) {
+
+                                var row = data[i]
+                                {#console.log(row['end_date'])#}
+                                var endd = row['end_date']
+                                if (endd == 0) {
+                                    var end_date = 2020
+                                } else {
+                                    var end_date = row['end_date']
+                                }
+                                {#console.log(end_date)#}
+                                console.log(end_date - row['start_date'])
+                                var x = end_date - row['start_date']
+                                if (x > 0) {
+                                    {#console.log(typeof end_date)#}
+                                    dx.push(
+                                        [
+                                            row['state'],
+                                            row["reporter"],
+                                            new Date(row['start_date'], 1, 1),
+                                            new Date(end_date, 1, 1)
+                                        ]
+                                    )
+                                }
+                                {#if (end_date == 2020) {#}
+                                {#    console.log(typeof end_date)#}
+                                {#}#}
+                            }
+
+                        dataTable.addColumn({type: 'string', id: 'President'});
+                        dataTable.addColumn({type: 'string', id: 'Name' })
+                        dataTable.addColumn({type: 'date', id: 'Start'});
+                        dataTable.addColumn({type: 'date', id: 'End'});
+                        ;
+
+                        dataTable.addRows(dx);
+                        dataTable.sort({column: 0, desc: false});
+
+                            var options = {
+                              timeline: { colorByRowLabel: true,
+                                            groupByRowLabel: true
+                                        },
+                              backgroundColor: '#ebf6f9',
+                                colors: ['#003b71', '#ffd100', 'green', 'orange', 'purple', 'blue'],
+                            };
+
+
+                        chart.draw(dataTable, options);
+
+
+                        }
+                    })
+
+
+                };
+            }
+        });
+
+
+    </script>
+
+
+  </head>
+  <body>
+  <h1>Harvard Data</h1>
+    <div id="timeline" style="height: 800px;"></div>
+  </body>
+
+
+  </html>
