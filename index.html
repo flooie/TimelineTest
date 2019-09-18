@@ -5,38 +5,20 @@
   <head>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script>
+      
+          <script>
 
         function make_date(data){
             return new (Function.prototype.bind.apply(
                    Date, [null].concat(data)
                 ))
         }
-        
-        console.log("OK");
-        
-        $.getJSON("flp.json", function( data ) {
-
-                console.log(data)
-
-            });
-        
-        console.log("OK NEXT")
 
         $.ajax({
             method: "GET",
-            url: "flp.json",
-            success: function (data) {
-            console.log(data)
-            }
-        });
-
-        $.ajax({
-            method: "GET",
-            url: "/harvard/",
+            url: "/send_json/",
             success: function (data) {
 
-                console.log(data)
 
                 google.charts.load('current', {'packages': ['timeline']});
 
@@ -44,52 +26,56 @@
 
                 function drawChart() {
 
-                    var $json_data = $.ajax({
-                        method: "GET",
-                        url: "/harvard-json/",
-                        dataType: "json",
-                        success: function(data) {
+//                     var $json_data = $.ajax({
+//                         method: "GET",
+//                         url: "/send_json/",
+//                         dataType: "json",
+//                         success: function(data) {
 
+                    $.getJSON("flp.json", function( data ) {
+                        
                         var container = document.getElementById('timeline');
                         var chart = new google.visualization.Timeline(container);
                         var dataTable = new google.visualization.DataTable();
 
+                        var arr = []
+                        for (var i in data) {
+                            console.log(data[i])
+                            for (var key in data[i]) {
+                                console.log(key)
+
+                            for (var j in data[i][key]['jurisdictions']) {
+                                var x = {}
+                                x['jurisdiction'] = data[i][key]['jurisdictions'][j]
+                                x['title'] = data[i][key]['title']
+                                x['end'] = data[i][key]['end']
+                                x['start'] = data[i][key]['start']
+                                x['key'] = data[i][key]['key']
+
+                                arr.push(x)
+                            }
+                        }
+                        }
 
                         var dx = []
 
-                            for (var i in data) {
-
-                                var row = data[i]
-
-                                var endd = row['end_date']
-                                if (endd == 0) {
-                                    var end_date = 2020
-                                } else {
-                                    var end_date = row['end_date']
-                                }
-
-                                 console.log(end_date - row['start_date'])
-                                 
-                                var x = end_date - row['start_date']
-                                if (x > 0) {
-
-                                    dx.push(
+                            for (var i in arr) {
+                                var row = arr[i]
+                                dx.push(
                                         [
-                                            row['state'],
-                                            row["reporter"],
-                                            new Date(row['start_date'], 1, 1),
-                                            new Date(end_date, 1, 1)
+                                        row['jurisdiction'],
+                                        row["key"] + " : " + row['title'],
+                                        new Date(row['start']),
+                                        new Date(row['end']),
                                         ]
                                     )
-                                }
-
-                                }
+                            }
 
                         dataTable.addColumn({type: 'string', id: 'President'});
                         dataTable.addColumn({type: 'string', id: 'Name' })
                         dataTable.addColumn({type: 'date', id: 'Start'});
                         dataTable.addColumn({type: 'date', id: 'End'});
-                        ;
+                        
 
                         dataTable.addRows(dx);
                         dataTable.sort({column: 0, desc: false});
@@ -100,11 +86,11 @@
                                         },
                               backgroundColor: '#ebf6f9',
                                 colors: ['#003b71', '#ffd100', 'green', 'orange', 'purple', 'blue'],
+                                avoidOverlappingGridLines: true
                             };
 
 
-                        chart.draw(dataTable, options);
-
+                            chart.draw(dataTable, options);
 
                         }
                     })
@@ -116,6 +102,117 @@
 
 
     </script>
+//     <script>
+
+//         function make_date(data){
+//             return new (Function.prototype.bind.apply(
+//                    Date, [null].concat(data)
+//                 ))
+//         }
+        
+//         console.log("OK");
+        
+//         $.getJSON("flp.json", function( data ) {
+
+//                 console.log(data)
+
+//             });
+        
+//         console.log("OK NEXT")
+
+//         $.ajax({
+//             method: "GET",
+//             url: "flp.json",
+//             success: function (data) {
+//             console.log(data)
+//             }
+//         });
+
+//         $.ajax({
+//             method: "GET",
+//             url: "/harvard/",
+//             success: function (data) {
+
+//                 console.log(data)
+
+//                 google.charts.load('current', {'packages': ['timeline']});
+
+//                 google.charts.setOnLoadCallback(drawChart);
+
+//                 function drawChart() {
+
+//                     var $json_data = $.ajax({
+//                         method: "GET",
+//                         url: "/harvard-json/",
+//                         dataType: "json",
+//                         success: function(data) {
+
+//                         var container = document.getElementById('timeline');
+//                         var chart = new google.visualization.Timeline(container);
+//                         var dataTable = new google.visualization.DataTable();
+
+
+//                         var dx = []
+
+//                             for (var i in data) {
+
+//                                 var row = data[i]
+
+//                                 var endd = row['end_date']
+//                                 if (endd == 0) {
+//                                     var end_date = 2020
+//                                 } else {
+//                                     var end_date = row['end_date']
+//                                 }
+
+//                                  console.log(end_date - row['start_date'])
+                                 
+//                                 var x = end_date - row['start_date']
+//                                 if (x > 0) {
+
+//                                     dx.push(
+//                                         [
+//                                             row['state'],
+//                                             row["reporter"],
+//                                             new Date(row['start_date'], 1, 1),
+//                                             new Date(end_date, 1, 1)
+//                                         ]
+//                                     )
+//                                 }
+
+//                                 }
+
+//                         dataTable.addColumn({type: 'string', id: 'President'});
+//                         dataTable.addColumn({type: 'string', id: 'Name' })
+//                         dataTable.addColumn({type: 'date', id: 'Start'});
+//                         dataTable.addColumn({type: 'date', id: 'End'});
+//                         ;
+
+//                         dataTable.addRows(dx);
+//                         dataTable.sort({column: 0, desc: false});
+
+//                             var options = {
+//                               timeline: { colorByRowLabel: true,
+//                                             groupByRowLabel: true
+//                                         },
+//                               backgroundColor: '#ebf6f9',
+//                                 colors: ['#003b71', '#ffd100', 'green', 'orange', 'purple', 'blue'],
+//                             };
+
+
+//                         chart.draw(dataTable, options);
+
+
+//                         }
+//                     })
+
+
+//                 };
+//             }
+//         });
+
+
+//     </script>
 
 
   </head>
