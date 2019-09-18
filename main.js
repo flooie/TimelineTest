@@ -6,7 +6,7 @@ $.getJSON("flp.json", function( data ) {
 //     google.charts.setOnLoadCallback(drawChart);
     
       function drawChart() {
-    var container = document.getElementById('example2.2');
+    var container = document.getElementById('timeline');
     var chart = new google.visualization.Timeline(container);
     var dataTable = new google.visualization.DataTable();
     dataTable.addColumn({ type: 'string', id: 'Term' });
