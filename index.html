@@ -47,19 +47,19 @@
                         }
                         }
 
-                        var dx = []
+//                         var dx = []
 
-                            for (var i in arr) {
-                                var row = arr[i]
-                                dx.push(
-                                        [
-                                        row['jurisdiction'],
-                                        row["key"] + " : " + row['title'],
-                                        new Date(row['start']),
-                                        new Date(row['end']),
-                                        ]
-                                    )
-                            }
+//                             for (var i in arr) {
+//                                 var row = arr[i]
+//                                 dx.push(
+//                                         [
+//                                         row['jurisdiction'],
+//                                         row["key"] + " : " + row['title'],
+//                                         new Date(row['start']),
+//                                         new Date(row['end']),
+//                                         ]
+//                                     )
+//                             }
 
                         dataTable.addColumn({type: 'string', id: 'President'});
                         dataTable.addColumn({type: 'string', id: 'Name' })
@@ -67,7 +67,7 @@
                         dataTable.addColumn({type: 'date', id: 'End'});
                         
 
-                        dataTable.addRows(dx);
+                        dataTable.addRows(arr);
                         dataTable.sort({column: 0, desc: false});
 
                             var options = {
