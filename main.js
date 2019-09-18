@@ -1,5 +1,5 @@
 
-$.getJSON("flp.json", function( data ) {
+$.getJSON("combined_state.json", function( data ) {
 
     google.charts.load('current', {'packages': ['timeline']});
     google.charts.setOnLoadCallback(drawChart);
